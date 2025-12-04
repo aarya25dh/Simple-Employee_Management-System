@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
-/* STRUCTURES */
+/* STRUCTURE TO CREATE EMPLOYEE DETAILS */
 
 typedef struct
 {
@@ -17,6 +17,7 @@ typedef struct
     int isActive;
 } EMP;
 
+/* STRUCTURE TO CREATE USER ACCOUNTS */
 typedef struct
 {
     char username[20];
@@ -24,20 +25,23 @@ typedef struct
     int role; // 1 = Admin, 0 = Viewer
 } USER;
 
-/* UTILITIES */
+/* UTILITIES FOR AUTHENTICATION AND CLEARING BUFFER*/
 
+// Clears any leftover input from the buffer until a newline is found
 void clearBuffer()
 {
     while (getchar() != '\n')
         ;
 }
 
+// Safely reads a line of input and removes the trailing newline
 void safeInput(char *buf, int size)
 {
     fgets(buf, size, stdin);
     buf[strcspn(buf, "\n")] = 0;
 }
 
+// Ensures the string is properly null-terminated and removes newline/carriage return
 void cleanString(char *s, int size)
 {
     s[size - 1] = '\0';
@@ -51,6 +55,7 @@ void cleanString(char *s, int size)
     }
 }
 
+// Converts all characters in the string to lowercase
 void toLowerStr(char *s)
 {
     for (int i = 0; s[i]; i++)
@@ -59,6 +64,7 @@ void toLowerStr(char *s)
 
 /* USER SYSTEM */
 
+// to check if any account exists
 int accountExists()
 {
     FILE *fp = fopen("users.dat", "rb");
@@ -68,6 +74,7 @@ int accountExists()
     return 1;
 }
 
+// to register a new user
 void registerUser()
 {
     USER u;
@@ -102,6 +109,7 @@ void registerUser()
     printf("Account created successfully.\n");
 }
 
+// to login an existing user
 int login(USER *current)
 {
     USER temp;
@@ -129,6 +137,7 @@ int login(USER *current)
     return 0;
 }
 
+// to change password of logged in user
 void changePassword(USER current)
 {
     FILE *fp = fopen("users.dat", "rb+");
@@ -161,6 +170,7 @@ void changePassword(USER current)
 
 /* EMPLOYEE SYSTEM */
 
+// to check if an employee ID already exists
 int idExists(int id)
 {
     FILE *fp = fopen("emp.dat", "rb");
@@ -180,6 +190,7 @@ int idExists(int id)
     return 0;
 }
 
+// to add a new employee record
 void add_rec()
 {
     FILE *fp = fopen("emp.dat", "ab");
@@ -239,6 +250,7 @@ void add_rec()
     printf("Employee Added Successfully.\n");
 }
 
+// to display all employee records sorted by ID
 void displaySorted()
 {
     FILE *fp = fopen("emp.dat", "rb");
@@ -284,6 +296,7 @@ void displaySorted()
     }
 }
 
+// to search for an employee by ID
 void search()
 {
     FILE *fp = fopen("emp.dat", "rb");
@@ -316,6 +329,7 @@ void search()
     fclose(fp);
 }
 
+// to edit an existing employee record
 void editEmployee()
 {
     FILE *fp = fopen("emp.dat", "rb+");
@@ -377,6 +391,7 @@ void editEmployee()
     fclose(fp);
 }
 
+// to soft delete an employee record
 void del()
 {
     FILE *fp = fopen("emp.dat", "rb+");
@@ -412,6 +427,7 @@ void del()
     fclose(fp);
 }
 
+// to generate salary report
 void salaryReport()
 {
     FILE *fp = fopen("emp.dat", "rb");
@@ -451,6 +467,7 @@ void salaryReport()
     fclose(fp);
 }
 
+// to filter employees by department
 void filterByDepartment()
 {
     FILE *fp = fopen("emp.dat", "rb");
@@ -490,7 +507,7 @@ void filterByDepartment()
     fclose(fp);
 }
 
-/* MAIN */
+/* MAIN PROGRAM */
 
 int main()
 {
